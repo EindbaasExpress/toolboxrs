@@ -1,7 +1,6 @@
 mod cidr;
 mod base64;
 mod cli;
-// mod hash;
 mod hash;
 
 pub use crate::cidr::ipv4_to_cidr_out_loud;
