@@ -1,6 +1,15 @@
 use clap::{Args, Parser, Subcommand, ArgAction};
 
-
+#[derive(Debug, clap::ValueEnum, Clone)]
+pub enum Algorithm {
+    Sha256,
+    Sha384,
+    Sha512,
+    Sha3_256,
+    Sha3_384,
+    Sha3_512,
+    Blake3,
+}
 #[derive(Parser)]
 #[clap(name = "toolboxrs")]
 pub struct Cli {
@@ -19,6 +28,9 @@ pub enum Commands {
     /// base64-encode, -decode strings, optionally url-safe
     #[clap(name = "base64")]
     Base64(Base64Command),
+    /// hash a string using one of the listed algorithms
+    #[clap(name = "hash")]
+    Hash(HashArgs),
 }
 
 // The 'cidr' command itself
@@ -72,3 +84,22 @@ pub enum Base64Commands {
     Encode(Base64Args),
     Decode(Base64Args),
 }
+
+// #[derive(Parser)]
+// pub struct HashCommand {
+//          #[structopt(subcommand)]
+//         pub hash_commands: HashCommands,
+// }
+
+#[derive(Args)]
+pub struct HashArgs {
+    pub value: String,
+    #[clap(value_enum, default_value_t=Algorithm::Sha256)]
+    pub algorithm: Algorithm,
+}
+
+// #[derive(Subcommand)]
+// pub enum HashCommands {
+//     // Here we pass in the args for the Base64 commands
+//     Hash(HashArgs),
+// }

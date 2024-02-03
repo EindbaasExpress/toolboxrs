@@ -3,9 +3,9 @@ mod cli;
 use clap::Parser;
 
 
-use toolboxrs::ipv4_to_cidr_out_loud;
+use toolboxrs::{ipv4_to_cidr_out_loud, hash_once_out_loud};
 use toolboxrs::{Base64Commands, Cli, Commands, CidrCommands};
-use toolboxrs::{Base64Operation, Base64OperationType};
+use toolboxrs::{process_b64_out_loud, Base64OperationType};
 
 // use crate::cli::Base64Commands;
 
@@ -36,19 +36,23 @@ fn main() {
                 Base64Commands::Encode(args) => {
                     println!("You passed a value to be base64-encoded, the url_safe option is set to {}", args.url_safe);
                     if args.url_safe {
-                        Base64Operation::process_out_loud(&args.value, Base64OperationType::EncodeURLSafe);
+                        process_b64_out_loud(&args.value, Base64OperationType::EncodeURLSafe);
                     } else {
-                        Base64Operation::process_out_loud(&args.value, Base64OperationType::EncodeStandard);
+                        process_b64_out_loud(&args.value, Base64OperationType::EncodeStandard);
                     }   
                 }
                 Base64Commands::Decode(args) => {
                     println!("You passed a value to be base64-decoded, the url_safe option is set to {}", args.url_safe);
                     if args.url_safe {
-                        Base64Operation::process_out_loud(&args.value, Base64OperationType::DecodeURLSafe);
+                        process_b64_out_loud(&args.value, Base64OperationType::DecodeURLSafe);
                     } else {
-                        Base64Operation::process_out_loud(&args.value, Base64OperationType::DecodeStandard);
+                        process_b64_out_loud(&args.value, Base64OperationType::DecodeStandard);
                     }   
                 }
         }
+        Commands::Hash(args) => {
+                println!("You passed {} as a value to hash \n", args.value);
+                hash_once_out_loud(&args.value, &args.algorithm);
+    },
     }
 }

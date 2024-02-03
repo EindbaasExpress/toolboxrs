@@ -81,22 +81,4 @@ mod tests {
 
     }
 
-    // #[test]
-    // fn test_count_ips_in_subnetmask() {
-        
-    //     // given the following cidr range as ipv4 in a string
-    //     let value = "255.255.0.0/14";
-    //     // when parsed as cidr object
-    //     let cidr = count_ips_in_subnetmask(value);
-
-    //     // then the expected values are:
-    //     // let expected_parsed_ip = "192.168.0.0";
-    //     // assert_eq!(cidr.first_address().to_string(), expected_parsed_ip);
-    //     // let expected_parsed_ip_net = "192.168.0.0/16"; // since the cidr only contains 1 address
-    //     // assert_eq!(cidr.to_string(), expected_parsed_ip_net);
-    //     // let expected_parsed_mask = "255.255.0.0";
-    //     // assert_eq!(cidr.mask().to_string(), expected_parsed_mask);
-
-    // }
-
 }
