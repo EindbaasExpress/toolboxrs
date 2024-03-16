@@ -31,6 +31,9 @@ pub enum Commands {
     /// hash a string using one of the listed algorithms
     #[clap(name = "hash")]
     Hash(HashArgs),
+    /// start a toolboxrs-server with a UI on port 3030
+    #[clap(name = "server")]
+    Server(ServerArgs),
 }
 
 // The 'cidr' command itself
@@ -85,12 +88,6 @@ pub enum Base64Commands {
     Decode(Base64Args),
 }
 
-// #[derive(Parser)]
-// pub struct HashCommand {
-//          #[structopt(subcommand)]
-//         pub hash_commands: HashCommands,
-// }
-
 #[derive(Args)]
 pub struct HashArgs {
     pub value: String,
@@ -98,8 +95,9 @@ pub struct HashArgs {
     pub algorithm: Algorithm,
 }
 
-// #[derive(Subcommand)]
-// pub enum HashCommands {
-//     // Here we pass in the args for the Base64 commands
-//     Hash(HashArgs),
-// }
+#[derive(Args)]
+pub struct ServerArgs {
+    /// sets the port of the local server
+    #[arg(short, long, default_value="3030")]
+    pub port: String,
+}

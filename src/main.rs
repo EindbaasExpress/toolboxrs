@@ -1,15 +1,14 @@
 mod cli;
 
 use clap::Parser;
-
-
 use toolboxrs::{ipv4_to_cidr_out_loud, hash_once_out_loud};
 use toolboxrs::{Base64Commands, Cli, Commands, CidrCommands};
 use toolboxrs::{process_b64_out_loud, Base64OperationType};
 
-// use crate::cli::Base64Commands;
+use warp::Filter;
 
-fn main() {
+#[tokio::main]
+async fn main() {
     let cli = Cli::parse();
 //     println!(r"
 //   _____  _____  _____  _     ______  _____ __   ________  _____ 
@@ -53,6 +52,23 @@ fn main() {
         Commands::Hash(args) => {
                 println!("You passed {} as a value to hash \n", args.value);
                 hash_once_out_loud(&args.value, &args.algorithm);
-    },
+        },
+        Commands::Server(args) => {
+                println!("localhost:{} is used as the port to run the server \n", args.port);
+                match args.port.parse::<u16>() {
+                    Ok(port) => {
+                        // Define a warp filter to serve static files from the current directory
+                        let static_files = warp::fs::dir("./web");
+
+                        // Define the server routes
+                        let routes = warp::path::end().and(static_files);
+                        warp::serve(routes).run(([127, 0, 0, 1], port)).await;
+
+                    }
+                    Err(_e) => println!(
+                        "{} is not valid, you can also try and use the default port (3030) \n", args.port
+                    ),
+                  }
+        },
     }
 }
