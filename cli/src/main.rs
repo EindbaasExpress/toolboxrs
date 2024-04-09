@@ -1,9 +1,7 @@
-mod cli;
-
 use clap::Parser;
-use toolboxrs::{ipv4_to_cidr_out_loud, hash_once_out_loud};
-use toolboxrs::{Base64Commands, Cli, Commands, CidrCommands};
-use toolboxrs::{process_b64_out_loud, Base64OperationType};
+use shared::{ipv4_to_cidr_out_loud, hash_once_out_loud};
+use cli::{Base64Commands, Cli, Commands, CidrCommands};
+use shared::{process_b64_out_loud, Base64OperationType};
 
 use warp::Filter;
 
@@ -58,10 +56,11 @@ async fn main() {
                 match args.port.parse::<u16>() {
                     Ok(port) => {
                         // Define a warp filter to serve static files from the current directory
-                        let static_files = warp::fs::dir("./web");
+                        let asset_folder = warp::path("assets").and(warp::fs::dir("./wasm/toolboxrs-ui/dist/assets"));
+                        let index = warp::fs::file("./wasm/toolboxrs-ui/dist/index.html");
 
                         // Define the server routes
-                        let routes = warp::path::end().and(static_files);
+                        let routes = asset_folder.or(index);
                         warp::serve(routes).run(([127, 0, 0, 1], port)).await;
 
                     }

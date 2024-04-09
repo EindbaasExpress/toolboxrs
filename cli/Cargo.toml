@@ -1,0 +1,17 @@
+[package]
+name = "cli"
+version = "0.1.0"
+edition = "2021"
+
+# Declare dependencies
+[dependencies]
+shared = { path = "../shared" }
+clap = { version = "4.0", features = ["derive"] }
+regex = "1.10.2"
+tokio = { version = "1.36.0", features = ["full"] }
+warp = "0.3.6"
+
+# Specify CLI binary entry point
+[[bin]]
+name = "toolboxrs_cli"
+path = "src/main.rs"

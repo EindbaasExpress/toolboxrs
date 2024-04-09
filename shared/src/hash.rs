@@ -1,8 +1,7 @@
-// use hex_literal::hex;
 use sha2::{Sha256, Sha384, Sha512, Digest};
 use sha3::{Sha3_256, Sha3_384, Sha3_512, Digest as Sha3Digest};
 use blake3::Hasher as Blake3Hasher;
-use crate::cli::Algorithm;
+use crate::cli_model::Algorithm;
 
 // A trait object that abstracts over types implementing the Digest trait
 trait Hasher {
