@@ -48,8 +48,7 @@ jobs:
       # Build Rust crate with wasm-pack (compile WebAssembly target)
       - name: Build Rust Wasm Crate
         run: |
-          cd path/to/your/wasm-crate
-          wasm-pack build --release
+          cd wasm; wasm-pack build --target bundler --release
 
       # Set up Node.js environment
       - name: Set up Node.js
