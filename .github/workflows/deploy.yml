@@ -10,9 +10,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        rust: [stable, nightly] # We will install both stable and nightly versions of Rust
+    # strategy:
+    #   matrix:
+    #     rust: [stable, nightly] # We will install both stable and nightly versions of Rust
 
     steps:
       # Checkout the repository
@@ -29,6 +29,11 @@ jobs:
     #     uses: dtolnay/rust-toolchain@stable
     #     with:
     #       toolchain: stable
+
+      # Install Wasm-Pack
+      - name: add wasm32-unknown-unknown target
+        run: |
+            rustup target add wasm32-unknown-unknown
 
       # Build your Rust crates that do not require wasm-pack (one might need nightly)
       - name: Build Rust Crates
