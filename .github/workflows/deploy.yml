@@ -63,10 +63,20 @@ jobs:
           npm ci  # Clean install dependencies
           npm run build  # Build the Svelte project
 
-      # Deploy to GitHub Pages
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./wasm/toolboxrs-ui/dist
+          path: ./wasm/toolboxrs-ui/dist
 
+  deploy:
+    # Deploy job that runs after the build job is successful
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write  # Grant the job permission to write to GitHub Pages
+      id-token: write  # Required for deployment
+
+    steps:
+      # Deploy to GitHub Pages using actions/deploy-pages
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
