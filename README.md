@@ -30,7 +30,7 @@ The reason for this, is that we require the `per-package-target` feature to comp
 You also need to redownload the target wasm32 again when switching: `rustup target add wasm32-unknown-unknown`.
 
 ### Building the project
-1. To build to entire rust-project use the Makefile in the root by running `make build-all` from the project root.
+1. To build to entire rust-project use the Makefile in the root by running `make build_all` from the project root.
 This will build the project as a whole, both all three crates with their own targets (mainly for wasm getting stuck during compilation). After this the `wasm-pack build` command is executed to build a local package that can be imported into the toolboxrs-ui front-end project. This uses vite and Svelte for the front-end code, and uses the commands from the `shared` crate via the `wasm` binary.
 For this Vite requires the wasm and the top-level-await plugins in order to run with webassembly.
 2. To build the front-end project into a /dist-folder, run `npm install` and `npm run build` in the `wasm/toolboxrs-ui/`-folder. 
@@ -42,7 +42,11 @@ This will build the front-end components and use the latest version of your wasm
 - You can also develop locally on the UI by running `npm run dev` from within the npm-project (`wasm/toolboxrs-ui`). 
 - There is no auto-reload set up for the Rust-part, so after changes, rerun your commands to see the latest output.
 
-### Current list of todo's still:
-- use functions from shared in wasm-crate
-- built UI that uses the functions from the wasm-crate
-- check release/deploy options.
+
+### Things I wanted to touch in this project:
+- Use Rust for a CLI
+- Use multi-crate setup in Rust
+- Use Webassembly as back-end for a static site
+- Use Vitest for Svelte Component Tests
+- Use Github Actions to build to project for the brew tap
+- Use Github Actions to build to project for a github page

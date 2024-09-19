@@ -10,10 +10,12 @@ forced-target = "wasm32-unknown-unknown"
 [lib]
 crate-type = ["cdylib", "rlib"]
 
-# Specify custom build script
-# build = "build.rs"
-
 # Declare dependencies
 [dependencies]
+console_error_panic_hook = "0.1.7"
+console_log = "1.0.0"
+log = "=0.4.21"
+serde-wasm-bindgen = "0.6.5"
 shared = { path = "../shared" }
 wasm-bindgen = "0.2.92"
+wasm-logger = "0.2.0"

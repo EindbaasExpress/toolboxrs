@@ -1,7 +1,7 @@
-use sha2::{Sha256, Sha384, Sha512, Digest};
-use sha3::{Sha3_256, Sha3_384, Sha3_512, Digest as Sha3Digest};
-use blake3::Hasher as Blake3Hasher;
 use crate::cli_model::Algorithm;
+use blake3::Hasher as Blake3Hasher;
+use sha2::{Digest, Sha256, Sha384, Sha512};
+use sha3::{Digest as Sha3Digest, Sha3_256, Sha3_384, Sha3_512};
 
 // A trait object that abstracts over types implementing the Digest trait
 trait Hasher {
@@ -92,48 +92,59 @@ impl Hasher for Blake3Hasher {
 //     hasher.finalize()
 // }
 
-
 struct HashOperator {
-    hasher: Box<dyn Hasher>
+    hasher: Box<dyn Hasher>,
 }
 impl HashOperator {
-    
     /// main method, contains an implementation for every defined
     /// variant of the cli.Algorithm-enum
     fn new(algorithm: &Algorithm) -> HashOperator {
         match algorithm {
-            Algorithm::Sha256 => HashOperator{hasher: Box::new(Sha256::new())},
-            Algorithm::Sha384 => HashOperator{hasher: Box::new(Sha384::new())},
-            Algorithm::Sha512 => HashOperator{hasher: Box::new(Sha512::new())},
-            Algorithm::Sha3_256 => HashOperator{hasher: Box::new(Sha3_256::new())},
-            Algorithm::Sha3_384 => HashOperator{hasher: Box::new(Sha3_384::new())},
-            Algorithm::Sha3_512 => HashOperator{hasher: Box::new(Sha3_512::new())},
-            Algorithm::Blake3 => HashOperator{hasher: Box::new(Blake3Hasher::new())},
+            Algorithm::Sha256 => HashOperator {
+                hasher: Box::new(Sha256::new()),
+            },
+            Algorithm::Sha384 => HashOperator {
+                hasher: Box::new(Sha384::new()),
+            },
+            Algorithm::Sha512 => HashOperator {
+                hasher: Box::new(Sha512::new()),
+            },
+            Algorithm::Sha3_256 => HashOperator {
+                hasher: Box::new(Sha3_256::new()),
+            },
+            Algorithm::Sha3_384 => HashOperator {
+                hasher: Box::new(Sha3_384::new()),
+            },
+            Algorithm::Sha3_512 => HashOperator {
+                hasher: Box::new(Sha3_512::new()),
+            },
+            Algorithm::Blake3 => HashOperator {
+                hasher: Box::new(Blake3Hasher::new()),
+            },
         }
     }
 }
 
 /// this is the main function in this module
 /// the Algorithm is an enum defined in the cli-module
-/// because of clap-restrictions. 
+/// because of clap-restrictions.
 pub fn hash_once(value: &str, algorithm: &Algorithm) -> String {
     let mut operator = HashOperator::new(algorithm);
-    
+
     let data = value.as_bytes();
     operator.hasher.update(data);
     let hash_result = operator.hasher.finalize();
 
     // return output
-    let hex_string: String = hash_result.iter().map(|byte| format!("{:02x}", byte)).collect();
-
-    return hex_string
-
+    hash_result
+        .iter()
+        .map(|byte| format!("{:02x}", byte))
+        .collect()
 }
 
-pub fn hash_once_out_loud(value: &str, algorithm: &Algorithm) -> () {
+pub fn hash_once_out_loud(value: &str, algorithm: &Algorithm) {
     let output = hash_once(value, algorithm);
     println!("your output is: \n{}", output);
-
 }
 
 #[cfg(test)]
@@ -152,10 +163,9 @@ mod tests {
             (Algorithm::Sha3_512, "b751850b1a57168a5693cd924b6b096e08f621827444f70d884f5d0240d2712e10e116e9192af3c91a7ec57647e3934057340b4cf408d5a56592f8274eec53f0"),
             (Algorithm::Blake3, "6437b3ac38465133ffb63b75273a8db548c558465d79db03fd359c6cd5bd9d85"),
         ];
-        for (algorithm, expected_output) in algorithms.into_iter(){
+        for (algorithm, expected_output) in algorithms.into_iter() {
             let output = hash_once("abc", &algorithm);
             assert_eq!(output, String::from(expected_output))
         }
     }
-
 }

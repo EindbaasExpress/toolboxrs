@@ -1,0 +1,72 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # Trigger on push to the main branch
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        rust: [stable, nightly] # We will install both stable and nightly versions of Rust
+
+    steps:
+      # Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Setup Rust environment (stable and nightly)
+      - name: Set up Rust (Nightly)
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly
+          override: true # use nightly for the part that needs it
+
+      - name: Set up Rust (Stable)
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: false # will use for other crates
+
+      # Build your Rust crates that do not require wasm-pack (one might need nightly)
+      - name: Build Rust Crates
+        run: |
+          cargo build --release
+
+      # Install Wasm-Pack
+      - name: Install Wasm-Pack
+        run: |
+          curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+
+      # Build Rust crate with wasm-pack (compile WebAssembly target)
+      - name: Build Rust Wasm Crate
+        run: |
+          cd path/to/your/wasm-crate
+          wasm-pack build --release
+
+      # Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # Use your desired node version
+
+      # Install dependencies and build the Svelte Vite project
+      - name: Install and Build Frontend
+        working-directory: ./wasm/toolboxrs-ui
+        run: |
+          npm ci  # Clean install dependencies
+          npm run build  # Build the Svelte project
+
+      # Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./wasm/toolboxrs-ui/dist
+

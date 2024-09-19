@@ -1,4 +1,4 @@
-use clap::{Args, Parser, Subcommand, ArgAction};
+use clap::{ArgAction, Args, Parser, Subcommand};
 use shared::Algorithm;
 
 #[derive(Parser)]
@@ -7,7 +7,7 @@ pub struct Cli {
     // Subcommands
     // You can only have one subcommand section
     // so we point this to the Commands struct
-    #[structopt(subcommand)] 
+    #[structopt(subcommand)]
     pub command: Commands,
 }
 
@@ -35,8 +35,8 @@ pub enum Commands {
 // a clap::Args object
 #[derive(Parser)]
 pub struct CidrCommand {
-         #[structopt(subcommand)]
-        pub cidr_commands: CidrCommands,
+    #[structopt(subcommand)]
+    pub cidr_commands: CidrCommands,
 }
 // The command enum for the 'cidr' command
 #[derive(Subcommand)]
@@ -58,8 +58,8 @@ pub struct MaskArgs {
 
 #[derive(Parser)]
 pub struct Base64Command {
-         #[structopt(subcommand)]
-        pub base64_commands: Base64Commands,
+    #[structopt(subcommand)]
+    pub base64_commands: Base64Commands,
 }
 
 #[derive(Args)]
@@ -89,6 +89,6 @@ pub struct HashArgs {
 #[derive(Args)]
 pub struct ServerArgs {
     /// sets the port of the local server
-    #[arg(short, long, default_value="3030")]
+    #[arg(short, long, default_value = "3030")]
     pub port: String,
 }

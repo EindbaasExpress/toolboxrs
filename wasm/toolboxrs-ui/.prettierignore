@@ -1,0 +1,10 @@
+# Ignore artifacts:
+dist
+build
+coverage
+
+# Ignore all HTML files:
+**/*.html
+
+# ignore MD files
+**/*.md
