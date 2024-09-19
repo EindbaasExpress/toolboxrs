@@ -17,22 +17,18 @@ jobs:
     steps:
       # Checkout the repository
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Setup Rust environment (stable and nightly)
       - name: Set up Rust (Nightly)
         uses: dtolnay/rust-toolchain@stable
         with:
-          profile: minimal
           toolchain: nightly
-          override: true # use nightly for the part that needs it
 
-      - name: Set up Rust (Stable)
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          profile: minimal
-          toolchain: stable
-          override: false # will use for other crates
+    #   - name: Set up Rust (Stable)
+    #     uses: dtolnay/rust-toolchain@stable
+    #     with:
+    #       toolchain: stable
 
       # Build your Rust crates that do not require wasm-pack (one might need nightly)
       - name: Build Rust Crates
@@ -54,7 +50,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18' # Use your desired node version
+          node-version: '20' # Use your desired node version
 
       # Install dependencies and build the Svelte Vite project
       - name: Install and Build Frontend
