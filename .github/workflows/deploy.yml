@@ -21,14 +21,14 @@ jobs:
 
       # Setup Rust environment (stable and nightly)
       - name: Set up Rust (Nightly)
-        uses: actions-rs/toolchain@v1
+        uses: dtolnay/rust-toolchain@stable
         with:
           profile: minimal
           toolchain: nightly
           override: true # use nightly for the part that needs it
 
       - name: Set up Rust (Stable)
-        uses: actions-rs/toolchain@v1
+        uses: dtolnay/rust-toolchain@stable
         with:
           profile: minimal
           toolchain: stable
