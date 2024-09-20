@@ -62,6 +62,8 @@ jobs:
         run: |
           npm ci  # Clean install dependencies
           npm run build  # Build the Svelte project
+        env: 
+          VITE_BASE_URL: '/toolboxrs/'
 
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
